@@ -35,7 +35,7 @@
                       :password password}]
       (into {} (filter val uri-config)))))
 
-(defn- connection-factory [config]
+(defn connection-factory [config]
   (let [cfg (merge connection-defaults (env-config) config)]
     (doto (ConnectionFactory.)
       (.setHost (:host cfg))
@@ -47,7 +47,7 @@
       (.setRequestedFrameMax (:requested-frame-max cfg))
       (.setRequestedHeartbeat (:requested-heartbeat cfg)))))
 
-(defn- make-connection [{addrs :addresses :as config}]
+(defn make-connection [{addrs :addresses :as config}]
   (let [factory (connection-factory config)]
     (if addrs
       (.newConnection factory (into-array Address addrs))
@@ -119,7 +119,7 @@
     `(with-channel* ~config (fn [] ~@body))))
 
 ;;; basic properties
-(defn- props->map [^AMQP$BasicProperties props]
+(defn props->map [^AMQP$BasicProperties props]
   {:app-id (.getAppId props)
    :class-id (.getClassId props)
    :class-name (.getClassName props)
@@ -139,7 +139,7 @@
    :type (.getType props)
    :user-id (.getUserId props)})
 
-(defn- map->props [amap]
+(defn map->props [amap]
   (doto (AMQP$BasicProperties.)
     (.setAppId (:app-id amap))
     (.setClusterId (:cluster-id amap))
